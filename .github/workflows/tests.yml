@@ -3,8 +3,7 @@ name: Tests
 on:
   push:
     branches:
-      - main  # Replace with your main branch name
-
+      - A01751941
 jobs:
   test:
     runs-on: ubuntu-latest
