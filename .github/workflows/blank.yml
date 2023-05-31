@@ -159,3 +159,20 @@ jobs:
           docker load --input /tmp/$IMAGE_TAG.tar
           docker image ls -a
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+  run:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Create Lambda function
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr
+          IMAGE_TAG: A01751912
+        id: create_lambda
+        uses: aws-actions/aws-cli@v2
+        with:
+          args: lambda create-function --function-name MyLambdaFunction --runtime python3.8 --handler app.lambda_handler --role arn:aws:iam::123456789012:role/lambda-role --code ImageUri=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Print Lambda function link
+        run: |
+          echo "Lambda function link: https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions/${{ steps.create_lambda.outputs.stdout }}"
