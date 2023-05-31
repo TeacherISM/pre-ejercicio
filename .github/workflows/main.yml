@@ -156,21 +156,28 @@ jobs:
                 aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                 aws-region: us-east-1
             - name: Get ECR login
-              id: login-ecr
-              uses: aws-actions/amazon-ecr-login@v1
-              with: 
-                registry-type: public
-            - name: Pull image from ECR
-              run: docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/d0z3f1c0/demo-repository-ecr:latest-ggp
+              id: ecr-login
+              run: |
+                LOGIN=$(aws ecr get-login --region us-east-1 --no-include-email)
+                TOKEN=$(echo $LOGIN | awk '{print $6}')
+                echo "::set-output name=ecr-repository-url::$(echo $LOGIN | awk '{print $9}')"
+                echo "::set-output name=ecr-token::$TOKEN"
+            - name: Pull image ECR
+              run: |
+                IMAGE_TAG=latest-ggp
+                ECR_REPOSITORY_URL=$ECR_REPOSITORY_URL
+
+                echo $ECR_TOKEN | docker login --username AWS --password-stdin $ECR_REPOSITORY_URL
+                docker pull $ECR_REPOSITORY_URL:$IMAGE_TAG
             - name: Update Lambda function
               run: |
-                IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/d0z3f1c0/demo-repository-ecr:latest-ggp
+                IMAGE_TAG=latest-ggp
                 LAMBDA_FUNCTION_NAME=lambda-a01029422-ggp
 
                 aws lambda update-function-code \
                   --region us-east-1 \
                   --function-name $LAMBDA_FUNCTION_NAME \
-                  --image-uri $IMAGE_URI
+                  --image-uri $ECR_REPOSITORY_URL:$IMAGE_TAG
     # run:
     #     needs: deploy
     #     runs-on: ubuntu-latest
