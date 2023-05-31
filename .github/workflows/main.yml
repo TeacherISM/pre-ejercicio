@@ -85,7 +85,7 @@ jobs:
             # - name: Configure AWS credentials
             - name: Install Docker dependencies
               run: |
-                sudo apt-get update
+                # sudo apt-get update
                 sudo apt-get -y install docker.io
             - name: Dockerize
               run: |
