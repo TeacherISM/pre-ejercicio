@@ -1,2 +1,5 @@
 node_modules/
 coverage/
+/terraform/.terraform/
+/terraform/.terraform.lock*
+/terraform/terraform.tfstate*
