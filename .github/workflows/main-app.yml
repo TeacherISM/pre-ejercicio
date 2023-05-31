@@ -89,10 +89,9 @@ jobs:
             env:
               ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
               ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr
-              IMAGE_TAG: latest 
+              IMAGE_TAG: latest - apkz
             with:
-              context: .
-              dockerfile: Dockerfile
+              context: ./python3
               tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
               outputs: type=docker,dest=/tmp/${{ env.IMAGE_TAG }}.tar
                      

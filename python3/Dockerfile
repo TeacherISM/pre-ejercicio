@@ -13,7 +13,7 @@
 # ENTRYPOINT ["./execute.sh"]
 
 # Specify the base image with the desired Python version
-FROM python:3.11
+FROM public.ecr.aws/lambda/python:3.8
 
 # Copy the Lambda function code into the container
 COPY lambda_function.py /app/lambda_function.py
