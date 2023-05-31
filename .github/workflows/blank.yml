@@ -126,7 +126,7 @@ jobs:
           name: ${{ env.IMAGE_TAG }}
           path: /tmp/${{ env.IMAGE_TAG }}.tar
           
-  Deploy:
+  deploy:
     runs-on: ubuntu-latest
     needs: Dockerize
     steps:
@@ -153,7 +153,7 @@ jobs:
       - name: Deploy image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: e9m4m2x0/demo-repository-ecr
+          ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr
           IMAGE_TAG: A01751912
         run: |
           docker load --input /tmp/$IMAGE_TAG.tar
