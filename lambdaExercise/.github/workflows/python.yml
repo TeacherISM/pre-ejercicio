@@ -29,4 +29,4 @@ jobs:
           RUN_ENV=dev 
           coverage run -m pytest python3/test/
           coverage report
-          coverage html -d cc_report/
+          coverage html -d cc_report/ 
