@@ -1,0 +1,116 @@
+# Worklow for Build, Test, Package, Deploy, and Run
+
+name: Python app
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: [" *"]
+
+permissions:
+  contents: read
+#   packages: write
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Set up Python 3.10
+              uses: actions/setup-python@v3
+              with:
+                python-version: 3.10
+            - name: Install dependencies
+              run: |
+                python -m pip install --upgrade pip
+                pip install flake8 pytest
+                if [ -f python3/requirements.txt ]; then pip install -r python3/requirements.txt; fi
+            - name: Lint with flake8
+              run: |
+                # stop the build if there are Python syntax errors or undefined names
+                flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+                # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+                flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    test:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Set up Python 3.10
+              uses: actions/setup-python@v3
+              with:
+                python-version: 3.10
+            - name: Install dependencies
+              run: |
+                python -m pip install --upgrade pip
+                pip install flake8 pytest
+                if [ -f python3/requirements.txt ]; then pip install -r python3/requirements.txt; fi
+            - name: Test with pytest
+              run: |
+                RUN_ENV=dev
+                coverage run -m pytest python3/test
+                coverage report
+                coverage html -d cc_report/
+
+    package:
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Set up Python 3.10
+              uses: actions/setup-python@v3
+              with:
+                python-version: 3.10
+            - name: Install dependencies
+              run: |
+                python -m pip install --upgrade pip
+                pip install flake8 pytest
+                if [ -f python3/requirements.txt ]; then pip install -r python3/requirements.txt; fi
+            - name: Package
+              run: zip -r lambda.zip . -x '*.git*'
+                
+    dockerize:
+        needs: package
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Verify Docker version
+              run: docker version
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v2
+            # - name: Configure AWS credentials
+            - name: Install Docker dependencies
+              run: |
+                sudo apt-get update
+                sudo apt-get -y install docker.io
+            - name: Dockerize
+              run: |
+                docker build -t A01029422 .
+                echo "::set-output name=docker-image::A01029422"
+
+    # deploy:
+    #     needs: dockerize
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - name: Checkout
+    #           uses: actions/checkout@v3
+    #         - name: Configure AWS credentials
+    #           uses: aws-actions/configure-aws-credentials@v1
+    #           with:
+    #             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #             aws-region: us-east-1
+    #         - name: Create Lambda function
+    #           run: |
+    #             aws lambda create-function \
+    #             --function-name A01029422 \
+    #             --runtime python3.10 \
+    #             --zip-file fileb://lambda.zip \
+    #             --handler index.handler \
+    #             --runtime python3.10 \
+    #             --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/lambda-role
+
