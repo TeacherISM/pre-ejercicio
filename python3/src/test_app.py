@@ -1,6 +1,4 @@
-from src import app
-import sys
-sys.path.append('/src')
+import app
 
 def test_handler():
     event = {}
