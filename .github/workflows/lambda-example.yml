@@ -19,12 +19,23 @@ jobs:
               with:
                     node-version: '18.x'
             - name: Install dependencies
-              working-directory: ./app
+              working-directory: ./lambda
               run: npm install
             #- run: npm ci Generally faster
-            - name: Lint code
-              working-directory: ./app
-              run: npm run lint:fix
+            # - name: Lint code
+            #   working-directory: ./app
+            #   run: npm run lint:fix
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Use Node.js 18.x
+              uses: actions/setup-node@v3
+              with:
+                    node-version: '18.x'
+            - name: Test code
+              working-directory: ./lambda
+              run: npm run test
     # test:
     # # This job will run the unit tests
     # package:
