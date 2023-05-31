@@ -5,7 +5,7 @@ FROM public.ecr.aws/lambda/python:3.8
 WORKDIR /app
 
 # Copy the project files to the container
-COPY your_app.py /app/
+COPY app.py /app/
 COPY requirements.txt /app/
 
 # Install the Python dependencies
