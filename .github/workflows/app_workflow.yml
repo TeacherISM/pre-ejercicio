@@ -33,7 +33,6 @@ jobs:
     steps:
     - name: Test with pytest
       run: |
-        RUN_ENV=dev 
         coverage run -m pytest src/
         coverage report
         coverage html -d cc_report/
