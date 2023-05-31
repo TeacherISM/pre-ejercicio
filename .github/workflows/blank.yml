@@ -281,7 +281,6 @@ jobs:
           fi
 
       - name: Print Lambda function URL
-        if: steps.create-or-update-lambda.outputs.function_created == 'true'
         run: |
           function_name=test-lambda
           function_arn=$(aws lambda get-function --function-name $function_name --region ${{ env.AWS_REGION }} --query 'Configuration.FunctionArn' --output text)
