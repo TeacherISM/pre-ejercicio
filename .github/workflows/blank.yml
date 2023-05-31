@@ -210,7 +210,7 @@ jobs:
           IMAGE_URI="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           echo "Image URI: $IMAGE_URI"
           echo "IAM Role ARN: $IAM_ROLE_ARN"
-          aws lambda create-function --function-name MyLambdaFunction --runtime python3.8 --handler app.lambda_handler --role $IAM_ROLE_ARN --code ImageUri=$IMAGE_URI --package-type Image --region us-east-1 > lambda_output.txt
+          aws lambda create-function --function-name MyLambdaFunction --role $IAM_ROLE_ARN --code ImageUri=$IMAGE_URI --package-type Image --region us-east-1 > lambda_output.txt
   
       - name: Print Lambda function link
         run: |
