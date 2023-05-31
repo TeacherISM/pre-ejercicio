@@ -89,8 +89,8 @@ jobs:
 #                sudo apt-get update
             - name: Dockerize
               run: |
-                docker build -t A01029422 .
-                echo "::set-output name=docker-image::A01029422"
+                docker build -t a01029422 .
+                echo "::set-output name=docker-image::a01029422"
 
     # deploy:
     #     needs: dockerize
