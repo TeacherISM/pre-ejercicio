@@ -53,3 +53,14 @@ jobs:
       run: |
         export PYTHONPATH=src
         pytest
+
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Package generation
+        run: python package_generation.py
