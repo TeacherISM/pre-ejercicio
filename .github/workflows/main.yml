@@ -158,14 +158,12 @@ jobs:
             - name: Get ECR login
               id: ecr-login
               run: |
-                LOGIN=$(aws ecr get-login --region us-east-1 --no-include-email)
-                TOKEN=$(echo $LOGIN | awk '{print $6}')
-                echo "::set-output name=ecr-repository-url::$(echo $LOGIN | awk '{print $9}')"
+                TOKEN=$(aws ecr get-login-password --region us-east-1)
                 echo "::set-output name=ecr-token::$TOKEN"
             - name: Pull image ECR
               run: |
                 IMAGE_TAG=latest-ggp
-                ECR_REPOSITORY_URL=$ECR_REPOSITORY_URL
+                ECR_REPOSITORY_URL=https://us-east-1.console.aws.amazon.com/ecr/repositories/public/171483448440/demo-repository-ecr?region=us-east-1
 
                 echo $ECR_TOKEN | docker login --username AWS --password-stdin $ECR_REPOSITORY_URL
                 docker pull $ECR_REPOSITORY_URL:$IMAGE_TAG
