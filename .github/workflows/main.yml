@@ -71,46 +71,84 @@ jobs:
                 if [ -f python3/requirements.txt ]; then pip install -r python3/requirements.txt; fi
             - name: Package
               run: zip -r lambda.zip python3/src -x '*.git*'
-                
+            
     dockerize:
         needs: package
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v3
-            - name: Verify Docker version
-              run: docker version
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v2
-            # - name: Configure AWS credentials
-#            - name: Install Docker dependencies
-#              run: |
-#                sudo apt-get -y install docker.io
-#                sudo apt-get update
-            - name: Dockerize
-              run: |
-                docker build -t latest-ggp .
-                echo "::set-output name=docker-image::latest-ggp"
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: us-east-1
+            - name: Login to Amazon ECR
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@v1
+              with: 
+                registry-type: public
+            - name: Build, and tag image
+              uses: docker/build-push-action@v2
+              env: 
+                ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+                ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr
+                IMAGE_TAG: latest-ggp
+              with:
+                context: ./python3
+                tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+                outputs: type=docker,dest=/tmp/${{ env.IMAGE_TAG }}.tar
+            - name: Save image
+              uses: actions/upload-artifact@v3
+              env:
+                IMAGE_TAG: latest-ggp
+              with:
+                name: ${{ env.IMAGE_TAG }}
+                path: /tmp/${{ env.IMAGE_TAG }}.tar
 
-    # deploy:
-    #     needs: dockerize
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #         - name: Checkout
-    #           uses: actions/checkout@v3
-    #         - name: Configure AWS credentials
-    #           uses: aws-actions/configure-aws-credentials@v1
-    #           with:
-    #             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #             aws-region: us-east-1
-    #         - name: Create Lambda function
-    #           run: |
-    #             aws lambda create-function \
-    #             --function-name A01029422 \
-    #             --runtime python3.10 \
-    #             --zip-file fileb://lambda.zip \
-    #             --handler index.handler \
-    #             --runtime python3.10 \
-    #             --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/lambda-role
+        # deploy:
+        #     needs: dockerize
+        #     runs-on: ubuntu-latest
+        #     steps:
+        #         - name: Checkout
+        #           uses: actions/checkout@v3
+        #         - name: Configure AWS credentials
+        #           uses: aws-actions/configure-aws-credentials@v1
+        #           with:
+        #             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #             aws-region: us-east-1
+        #         - name: Create Lambda function
+        #           run: |
+        #             aws lambda create-function \
+        #             --function-name A01029422 \
+        #             --runtime python3.10 \
+        #             --zip-file fileb://lambda.zip \
+        #             --handler index.handler \
+        #             --runtime python3.10 \
+        #             --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/lambda-role
+
+    # dockerize:
+#         needs: package
+#         runs-on: ubuntu-latest
+#         steps:
+#             - name: Checkout
+#               uses: actions/checkout@v3
+#             - name: Verify Docker version
+#               run: docker version
+#             - name: Set up Docker Buildx
+#               uses: docker/setup-buildx-action@v2
+#             # - name: Configure AWS credentials
+# #            - name: Install Docker dependencies
+# #              run: |
+# #                sudo apt-get -y install docker.io
+# #                sudo apt-get update
+#             - name: Dockerize
+#               run: |
+#                 docker build -t latest-ggp .
+#                 echo "::set-output name=docker-image::latest-ggp"
+
 
