@@ -1,18 +1,11 @@
-FROM python:3.11
+FROM public.ecr.aws/lambda/python:3.10
 
-# Set working directory
-WORKDIR /app
+# Install the function's dependencies using file requirements.txt
 
-# Copy the necessary files
 COPY requirements.txt .
-COPY execute.sh .
-COPY src/ ./src/
+RUN pip install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+COPY src/app.py ${LAMBDA_TASK_ROOT}
 
-# Expose port
-EXPOSE 5000
-
-# Set execute.sh as the entrypoint
-ENTRYPOINT ["sh", "/app/execute.sh"]
+# Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
+CMD [ "app.handler" ]
