@@ -83,9 +83,9 @@ jobs:
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v2
             # - name: Configure AWS credentials
-            - name: Install Docker dependencies
-              run: |
-                sudo apt-get -y install docker.io
+#            - name: Install Docker dependencies
+#              run: |
+#                sudo apt-get -y install docker.io
 #                sudo apt-get update
             - name: Dockerize
               run: |
