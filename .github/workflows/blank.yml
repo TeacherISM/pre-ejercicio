@@ -169,21 +169,30 @@ jobs:
     needs: deploy
     steps:
       - name: Configure AWS credentials
+        id: configure-aws
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
+    
+      - name: Retrieve Account ID
+        id: get_account_id
+        run: |
+          AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+          echo "::set-output name=aws_account_id::$AWS_ACCOUNT_ID"
+    
       - name: Create Lambda function
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr
           IMAGE_TAG: A01751912
         run: |
-          aws lambda create-function --function-name MyLambdaFunction --runtime python3.8 --handler app.lambda_handler --code ImageUri=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --region us-east-1 > lambda_output.txt
-
+          IAM_ROLE_ARN="arn:aws:iam::${{ steps.get_account_id.outputs.aws_account_id }}:root"
+          aws lambda create-function --function-name MyLambdaFunction --runtime python3.8 --handler app.lambda_handler --role $IAM_ROLE_ARN --code ImageUri=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --region us-east-1 > lambda_output.txt
+    
       - name: Print Lambda function link
         run: |
           LAMBDA_ARN=$(cat lambda_output.txt | jq -r '.FunctionArn')
           echo "Lambda function link: https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions/$LAMBDA_ARN"
+    
