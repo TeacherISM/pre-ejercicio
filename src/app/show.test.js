@@ -1,3 +1,4 @@
+import app from '../app'
 import request from 'supertest'
 
 describe('show', () => {
