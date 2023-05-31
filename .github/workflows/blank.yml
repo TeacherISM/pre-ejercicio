@@ -216,33 +216,39 @@ jobs:
       #     docker pull public.ecr.aws/${{ env.PUBLIC_ECR_REPO }}:$IMAGE_TAG
       #     docker tag public.ecr.aws/${{ env.PUBLIC_ECR_REPO }}:$IMAGE_TAG ${{ steps.get-private-repo-uri.outputs.private_repo_uri }}:$IMAGE_TAG
       #     docker push ${{ steps.get-private-repo-uri.outputs.private_repo_uri }}:$IMAGE_TAG
-      # workpls
+      # # workpls
 
       - name: Create Role if Not Exist
         id: create-role
         run: |
           ROLE_NAME=my-lambda-role
-          # ROLE_ARN=$(aws iam list-roles --query "Roles[?RoleName=='$ROLE_NAME'].Arn" --output text)
-          ROLE_ARN=$(aws iam create-role --role-name $ROLE_NAME --assume-role-policy-document '{
-            "Version": "2012-10-17",
-            "Statement": [
-              {
-                "Sid": "",
-                "Effect": "Allow",
-                "Principal": {
-                  "Service": "lambda.amazonaws.com"
-                },
-                "Action": "sts:AssumeRole"
-              }
-            ]
-          }' --query 'Role.Arn' --output text)
-          echo "Created IAM role: $ROLE_ARN"
+          ROLE_ARN=$(aws iam get-role --role-name $ROLE_NAME --query 'Role.Arn' --output text)
+          if [ -z "$ROLE_ARN" ]; then
+            ROLE_ARN=$(aws iam create-role --role-name $ROLE_NAME --assume-role-policy-document '{
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "lambda.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole"
+                }
+              ]
+            }' --query 'Role.Arn' --output text)
+            echo "Created IAM role: $ROLE_ARN"
+          else
+            echo "IAM role already exists: $ROLE_ARN"
+          fi
           echo "::set-output name=role_arn::$ROLE_ARN"
 
       - name: Wait for Role to be Created
         run: |
           role_arn=${{ steps.create-role.outputs.role_arn }}
           aws iam wait role-exists --role-name $(basename $role_arn)
+          aws iam wait role-arn-exists --role-arn $role_arn
+          aws iam wait role-activation-complete --role-name $(basename $role_arn)
 
       - name: Check if Lambda Function Exists
         id: check-function-existence
