@@ -20,5 +20,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@babel/present-env": "^7.22.4",
+    "babel-jest": "^29.5.0"
   }
 }
