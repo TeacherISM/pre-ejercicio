@@ -1,7 +1,6 @@
 from src import app
-from unittest import TestCase
 import sys
-sys.path.append('../src')
+sys.path.append('./src')
 
 def test_handler():
     event = {}
