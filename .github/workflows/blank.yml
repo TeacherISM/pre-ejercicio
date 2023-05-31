@@ -187,6 +187,8 @@ jobs:
           else
             USER_TYPE="IAM user"
           fi
+          echo "AWS Account ID: $AWS_ACCOUNT_ID"
+          echo "User Type: $USER_TYPE"
           echo "::set-output name=aws_account_id::$AWS_ACCOUNT_ID"
           echo "::set-output name=user_type::$USER_TYPE"
 
