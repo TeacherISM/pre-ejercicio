@@ -18,11 +18,13 @@ jobs:
               uses: actions/setup-node@v3
               with:
                     node-version: '18.x'
-            - run: cd app
-            - run: npm install
+            - name: Install dependencies
+              working-directory: ./app
+              run: npm install
             #- run: npm ci Generally faster
-            - run: npm run lint:fix
-
+            - name: Lint code
+              working-directory: ./app
+              run: npm run lint:fix
     # test:
     # # This job will run the unit tests
     # package:
