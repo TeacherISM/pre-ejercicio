@@ -247,7 +247,6 @@ jobs:
         run: |
           role_arn=${{ steps.create-role.outputs.role_arn }}
           aws iam wait role-exists --role-name $(basename $role_arn)
-          aws iam wait role-arn-exists --role-arn $role_arn
           aws iam wait role-activation-complete --role-name $(basename $role_arn)
 
       - name: Check if Lambda Function Exists
