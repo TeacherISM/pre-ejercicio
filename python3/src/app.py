@@ -1,16 +1,24 @@
 # import the Flask class from the flask module
-from flask import Flask, render_template, request, jsonify
+# from flask import Flask, render_template, request, jsonify
+import requests
 
 # create the application object
-app = Flask(__name__)
+# app = Flask(__name__)
 
 
 #comentario
 # use decorators to link the function to a url
-@app.route('/')
-def home():
-    return "Hola, A01029422"  # return a string
+# @app.route('/')
+# def home():
+#     return "Hola, A01029422"  # return a string
 
+def lambda_handler(event, context):
+    # r = requests.get('https://api.github.com/events')
+    return {
+        # 'statusCode': 200,
+        # 'body': "Hola, A01029422"
+        "Hola, A01029422"
+    }
 
 # @app.route('/welcome')
 # def welcome():

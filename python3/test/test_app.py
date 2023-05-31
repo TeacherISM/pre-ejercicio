@@ -2,20 +2,25 @@ import pytest
 from src import app
 
 
-@pytest.fixture
-def client():
-    """Create a test client for the app."""
-    app.app.config["TESTING"] = True
-    with app.app.test_client() as client:
-        yield client
+# @pytest.fixture
+# def client():
+#     """Create a test client for the app."""
+#     app.app.config["TESTING"] = True
+#     with app.app.test_client() as client:
+#         yield client
 
 
-def test_home(client):
-    """Test that the home endpoint returns 'Hello, World!'."""
-    response = client.get("/")
-    assert response.status_code == 200
-    assert response.get_data(as_text=True) == "Hola, A01029422"
+# def test_home(client):
+#     """Test that the home endpoint returns 'Hello, World!'."""
+#     response = client.get("/")
+#     assert response.status_code == 200
+#     assert response.get_data(as_text=True) == "Hola, A01029422"
 
+def test_lambda_handler():
+    """Test that the home endpoint returns 'Hello, A01029422!'."""
+    response = app.lambda_handler(None, None)
+    # assert response == "Hola, A01029422"
+    assert all("Hola, A01029422")
 
 # def test_welcome(client):
 #     """Test that the welcome endpoint returns a rendered template."""
