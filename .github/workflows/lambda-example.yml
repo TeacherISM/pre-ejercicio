@@ -35,7 +35,9 @@ jobs:
                     node-version: '18.x'
             - name: Test code
               working-directory: ./lambda
-              run: npm run test
+              run: |
+                npm install
+                npm run test
     # test:
     # # This job will run the unit tests
     # package:
