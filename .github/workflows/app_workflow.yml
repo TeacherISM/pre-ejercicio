@@ -54,7 +54,7 @@ jobs:
       - name: Install zip
         run: sudo apt-get update && sudo apt-get install -y zip
       - name: Zip src directory
-        run: zip -r src.zip src/
+        run: zip -r src.zip app/src/
       - name: Upload zipped src directory
         uses: actions/upload-artifact@v3
         with:
