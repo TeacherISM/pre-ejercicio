@@ -1,0 +1,37 @@
+# This workflow
+
+name: Lamba Example Exercise
+
+on:
+  push:
+    branches: ["*" ]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+    # This job will lint the code and make a build of the express application
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [14.x, 16.x, 18.x, 20.x]
+        steps:
+            - uses: actions/checkout@v2
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                    node-version: ${{ matrix.node-version }}
+            - run: npm install
+            #- run: npm ci Generally faster
+            - run: npm run lint:fix
+
+    # test:
+    # # This job will run the unit tests
+    # package:
+    # # This job will package the application into a zip file
+    # dockerize:
+    # # This job will build the docker image
+    # deploy:
+    # # This job will deploy the docker image to AWS ECR
+    # run:
+    # # This job will run the docker image in a AWS lambda function
