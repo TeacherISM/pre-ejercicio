@@ -188,27 +188,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Check Private ECR Repository Existence
-        id: check-repo-existence
-        run: |
-          repository=$(aws ecr describe-repositories --repository-names $ECR_REPOSITORY --region ${{ env.AWS_REGION }} --query 'repositories[0]' --output text)
-          if [ -z "$repository" ]; then
-            echo "Private ECR repository does not exist"
-            echo "::set-output name=repo_exists::false"
-          else
-            echo "Private ECR repository already exists"
-            echo "::set-output name=repo_exists::true"
-          fi
-  
       - name: Create Private ECR Repository
         id: create-repo
         run: |
-          repo_exists=${{ steps.check-repo-existence.outputs.repo_exists }}
-          if [ "$repo_exists" = "false" ]; then
-            aws ecr create-repository --repository-name $ECR_REPOSITORY --region ${{ env.AWS_REGION }}
+          aws ecr describe-repositories --repository-names $ECR_REPOSITORY --region ${{ env.AWS_REGION }} > /dev/null 2>&1
+          exit_code=$?
+          if [ $exit_code -eq 0 ]; then
+            echo "Private ECR repository already exists"
           else
-            echo "Private ECR repository already exists, skipping creation"
-          fi
+            aws ecr create-repository --repository-name $ECR_REPOSITORY --region ${{ env.AWS_REGION }}
+          fi 
 
       - name: Fetch Private Repository URI
         id: get-private-repo-uri
