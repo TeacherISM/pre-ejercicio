@@ -111,7 +111,7 @@ jobs:
         env:
           IMAGE_TAG: latest
         with:
-          name: ${{ env.IMAGE_TAG }}
+          name: my-deployment-package
           path: /tmp
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -130,7 +130,7 @@ jobs:
           ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr
           IMAGE_TAG: latest
         run: |
-          docker load --input /tmp/${{ env.IMAGE_TAG }}.tar
+          docker load --input /tmp/my-deployment-package.zip
           docker image ls -a
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           
