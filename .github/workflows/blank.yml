@@ -6,7 +6,7 @@ name: Application workflow
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "*" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "*" ]
     
@@ -283,5 +283,5 @@ jobs:
         run: |
           function_name=test-lambda
           function_arn=$(aws lambda get-function --function-name $function_name --region ${{ env.AWS_REGION }} --query 'Configuration.FunctionArn' --output text)
-          pre_signed_url=$(aws lambda create-function-url-config --function-name $function_name --region ${{ env.AWS_REGION }} --query 'PreSignedUrlConfig.PreSignedUrl' --output text)
+          pre_signed_url=$(aws lambda create-function-url-config --function-name $function_name --region ${{ env.AWS_REGION }} --auth-type NONE --output text)
           echo "Lambda function URL: $pre_signed_url"
