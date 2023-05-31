@@ -70,7 +70,7 @@ jobs:
                 pip install flake8 pytest
                 if [ -f python3/requirements.txt ]; then pip install -r python3/requirements.txt; fi
             - name: Package
-              run: zip -r lambda.zip . -x '*.git*'
+              run: zip -r lambda.zip python3/src -x '*.git*'
                 
     dockerize:
         needs: package
@@ -89,8 +89,8 @@ jobs:
 #                sudo apt-get update
             - name: Dockerize
               run: |
-                docker build -t a01029422 .
-                echo "::set-output name=docker-image::a01029422"
+                docker build -t latest-ggp .
+                echo "::set-output name=docker-image::latest-ggp"
 
     # deploy:
     #     needs: dockerize
