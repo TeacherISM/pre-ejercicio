@@ -3,10 +3,10 @@ name: Ejercicio
 on:
   push:
     branches:
-      - "*"
+      - '*'
   pull_request:
     branches:
-      - "*"
+      - '*'
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
       - name: Use Python 3.10
         uses: actions/setup-python@v3
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
@@ -39,18 +39,5 @@ jobs:
 
     steps:
       - name: Test using pytest
-        run: echo
-
-  package:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Package
-      run: |
-        pytest
-
-
-
-
-
+        run: |
+          pytest
