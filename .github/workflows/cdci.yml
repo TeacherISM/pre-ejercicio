@@ -31,6 +31,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      # Install dependencies, if needed
+      - name: Install dependencies
+        run: npm install
       
       - name: Run tests
         run: npm test
