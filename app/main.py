@@ -1,7 +1,9 @@
 """ Basic Python Flask API """
 
-from flask import Flask, jsonify
+
 from datetime import date, timedelta
+from flask import Flask, jsonify
+
 
 app = Flask(__name__)
 
