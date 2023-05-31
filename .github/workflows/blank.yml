@@ -164,6 +164,9 @@ jobs:
           docker load --input /tmp/$IMAGE_TAG.tar
           docker image ls -a
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    outputs:
+      ecr_registry: ${{ steps.login-ecr.outputs.registry }}
+  
   run:
     runs-on: ubuntu-latest
     needs: deploy
@@ -175,7 +178,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
+  
       - name: Retrieve Account ID and User Type
         id: get_account_info
         run: |
@@ -191,10 +194,10 @@ jobs:
           echo "User Type: $USER_TYPE"
           echo "::set-output name=aws_account_id::$AWS_ACCOUNT_ID"
           echo "::set-output name=user_type::$USER_TYPE"
-
+  
       - name: Create Lambda function
         env:
-          ECR_REGISTRY: ${{ needs.deploy.outputs.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ needs.deploy.outputs.ecr_registry }}
           ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr
           IMAGE_TAG: A01751912
         run: |
@@ -205,7 +208,7 @@ jobs:
             IAM_ROLE_ARN="arn:aws:iam::${{ steps.get_account_info.outputs.aws_account_id }}:role/lambda-role"
           fi
           aws lambda create-function --function-name MyLambdaFunction --runtime python3.8 --handler app.lambda_handler --role $IAM_ROLE_ARN --code ImageUri=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --region us-east-1 > lambda_output.txt
-
+  
       - name: Print Lambda function link
         run: |
           LAMBDA_ARN=$(cat lambda_output.txt | jq -r '.FunctionArn')
