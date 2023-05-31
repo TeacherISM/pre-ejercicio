@@ -211,11 +211,11 @@ jobs:
         run: |
           aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.get-private-repo-uri.outputs.private_repo_uri }}:$IMAGE_TAG
       
-      - name: Create private ecr image
-        run: |
-          docker pull public.ecr.aws/${{ env.PUBLIC_ECR_REPO }}:$IMAGE_TAG
-          docker tag public.ecr.aws/${{ env.PUBLIC_ECR_REPO }}:$IMAGE_TAG ${{ steps.get-private-repo-uri.outputs.private_repo_uri }}:$IMAGE_TAG
-          docker push ${{ steps.get-private-repo-uri.outputs.private_repo_uri }}:$IMAGE_TAG
+      # - name: Create private ecr image
+      #   run: |
+      #     docker pull public.ecr.aws/${{ env.PUBLIC_ECR_REPO }}:$IMAGE_TAG
+      #     docker tag public.ecr.aws/${{ env.PUBLIC_ECR_REPO }}:$IMAGE_TAG ${{ steps.get-private-repo-uri.outputs.private_repo_uri }}:$IMAGE_TAG
+      #     docker push ${{ steps.get-private-repo-uri.outputs.private_repo_uri }}:$IMAGE_TAG
       # workpls
 
       - name: Create Role if Not Exist
