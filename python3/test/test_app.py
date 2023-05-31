@@ -9,4 +9,4 @@ def test_handler():
     response = app.handler(event, context)
 
     assert response['statusCode'] == 200
-    assert response['body'] == 'Hello, world!'
+    assert response['body'] == 'Hello, world!!'
