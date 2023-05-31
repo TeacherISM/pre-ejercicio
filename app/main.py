@@ -1,16 +1,21 @@
-""" Basic Flask application for CI/CD exercise """
+""" Basic Python Flask API """
 
-from flask import Flask, render_template
+from flask import Flask, jsonify
+from datetime import date, timedelta
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    """ Application entrypoint """
-    name = "John Doe"
-    return render_template('index.html', name=name)
+@app.route('/today', methods=['GET'])
+def get_today():
+    """ Endpoint that gets today's date """
+    today = date.today()
+    return jsonify({'date': str(today)})
 
+@app.route('/tomorrow', methods=['GET'])
+def get_tomorrow():
+    """ Endpoint that gets tomorrow's date """
+    tomorrow = date.today() + timedelta(days=1)
+    return jsonify({'date': str(tomorrow)})
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    
+    app.run()
