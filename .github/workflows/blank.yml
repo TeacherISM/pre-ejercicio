@@ -298,25 +298,25 @@ jobs:
       #       echo "::set-output name=api_gateway_exists::true"
       #     fi
         
-      # - name: Create API Gateway
-      #   id: create-api-gateway
-      #   if: steps.check-api-gateway-existence.outputs.api_gateway_exists == 'false'
-      #   run: |
-      #     rest_api_id=$(aws apigatewayv2 create-api --name "LambdaAPI" --protocol-type HTTP --target ${{ steps.create-or-update-lambda.outputs.function_arn }} --region ${{ env.AWS_REGION }} --query 'ApiId' --output text)
-      #     echo "::set-output name=rest_api_id::$rest_api_id"
+      - name: Create API Gateway
+        id: create-api-gateway
+        # if: steps.check-api-gateway-existence.outputs.api_gateway_exists == 'false'
+        run: |
+          rest_api_id=$(aws apigatewayv2 create-api --name "LambdaAPI" --protocol-type HTTP --target ${{ steps.create-or-update-lambda.outputs.function_arn }} --region ${{ env.AWS_REGION }} --query 'ApiId' --output text)
+          echo "::set-output name=rest_api_id::$rest_api_id"
       
-      # - name: Deploy API Gateway
-      #   id: deploy-api-gateway
-      #   if: steps.create-api-gateway.outputs.rest_api_id != ''
-      #   run: |
-      #     rest_api_id=${{ steps.create-api-gateway.outputs.rest_api_id }}
-      #     aws apigatewayv2 create-stage --api-id $rest_api_id --stage-name "prod" --region ${{ env.AWS_REGION }}
+      - name: Deploy API Gateway
+        id: deploy-api-gateway
+        if: steps.create-api-gateway.outputs.rest_api_id != ''
+        run: |
+          rest_api_id=${{ steps.create-api-gateway.outputs.rest_api_id }}
+          aws apigatewayv2 create-stage --api-id $rest_api_id --stage-name "prod" --region ${{ env.AWS_REGION }}
       
-      # - name: Print API Gateway URL
-      #   if: steps.deploy-api-gateway.outputs.stage_name != ''
-      #   run: |
-      #     rest_api_id=${{ steps.create-api-gateway.outputs.rest_api_id }}
-      #     stage_name=${{ steps.deploy-api-gateway.outputs.stage_name }}
-      #     echo "API Gateway URL: https://${rest_api_id}.execute-api.${{ env.AWS_REGION }}.amazonaws.com/${stage_name}"
+      - name: Print API Gateway URL
+        if: steps.deploy-api-gateway.outputs.stage_name != ''
+        run: |
+          rest_api_id=${{ steps.create-api-gateway.outputs.rest_api_id }}
+          stage_name=${{ steps.deploy-api-gateway.outputs.stage_name }}
+          echo "API Gateway URL: https://${rest_api_id}.execute-api.${{ env.AWS_REGION }}.amazonaws.com/${stage_name}"
       
         
