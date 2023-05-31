@@ -15,5 +15,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 
 # Set execute.sh as the entrypoint
-ENTRYPOINT ["/app/execute.sh"]
-    
+ENTRYPOINT ["sh", "/app/execute.sh"]
