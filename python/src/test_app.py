@@ -1,4 +1,4 @@
-import app
+from src import app
 from unittest import TestCase
 import sys
 sys.path.append('../src')
