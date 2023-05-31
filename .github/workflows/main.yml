@@ -156,8 +156,10 @@ jobs:
                 aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                 aws-region: us-east-1
             - name: Get ECR login
-              id: ecr-login
-              run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/d0z3f1c0/demo-repository-ecr
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@v1
+              with: 
+                registry-type: public
             - name: Pull image from ECR
               run: docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/d0z3f1c0/demo-repository-ecr:latest-ggp
             - name: Update Lambda function
