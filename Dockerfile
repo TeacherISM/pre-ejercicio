@@ -1,15 +1,12 @@
-# Use an appropriate Python base image
-FROM public.ecr.aws/lambda/python:3.8
+FROM python:3.11
 
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the project files to the container
-COPY app.py /app/
-COPY requirements.txt /app/
-
-# Install the Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Set the command to run your app
-CMD [ "python3", "your_app.py" ]
+#RUN apt-get update && apt-get -y install libsnappy-dev && apt-get -y install python3-dev
+RUN mkdir /app
+COPY execute.sh /execute.sh
+COPY requirements.txt /requirements.txt
+RUN chmod 777 /execute.sh
+RUN pip install -r /requirements.txt
+COPY src/ /src/
+EXPOSE 5000
+WORKDIR /app/
+ENTRYPOINT ["./execute.sh"]
