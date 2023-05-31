@@ -39,8 +39,8 @@ jobs:
     steps:
       - name: Install dependencies
         run: |
-        python -m pip install --upgrade pip
-        if [ -f app/requirements.txt ]; then pip install -r app/requirements.txt; fi
+          python -m pip install --upgrade pip
+          if [ -f app/requirements.txt ]; then pip install -r app/requirements.txt; fi
         
       - name: Test using pytest
         run: |
