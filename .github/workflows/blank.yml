@@ -279,9 +279,7 @@ jobs:
               --region ${{ env.AWS_REGION }}
           fi
 
-      - name: Print Lambda function URL
+      - name: Invoke Lambda function
         run: |
-          function_name=test-lambda
-          function_arn=$(aws lambda get-function --function-name $function_name --region ${{ env.AWS_REGION }} --query 'Configuration.FunctionArn' --output text)
-          pre_signed_url=$(aws lambda create-function-url-config --function-name $function_name --region ${{ env.AWS_REGION }} --auth-type NONE --output text)
-          echo "Lambda function URL: $pre_signed_url"
+          aws lambda invoke --function-name test-lambda --region ${{ env.AWS_REGION }} output.txt
+          cat output.txt
