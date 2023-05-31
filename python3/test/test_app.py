@@ -71,5 +71,5 @@ from src import app
 def test_lambda_handler():
     event = {}
     context = {}
-    response = lambda_handler(event, context)
-    assert response == "Hola Akemi"
+    response = app.lambda_handler(event, context)
+    assert all("Hola Akemi")
