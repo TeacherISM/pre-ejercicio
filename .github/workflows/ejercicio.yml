@@ -32,3 +32,25 @@ jobs:
       - name: Do Lint testing
         run: |
           pylint app/main.py
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test using pytest
+        run: echo
+
+  package:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Package
+      run: |
+        pytest
+
+
+
+
+
