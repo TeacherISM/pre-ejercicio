@@ -1,12 +1,5 @@
-FROM python:3.11
-
-#RUN apt-get update && apt-get -y install libsnappy-dev && apt-get -y install python3-dev
-RUN mkdir /app
-COPY execute.sh /app/execute.sh
+FROM public.ecr.aws/lambda/python:3.8
 COPY requirements.txt /app/requirements.txt
-RUN chmod 777 /app/execute.sh
-RUN pip install -r /app/requirements.txt
-COPY src/ /app/src/
-EXPOSE 5000
-WORKDIR /app/
-ENTRYPOINT ["./execute.sh"]
+RUN  pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
+COPY . ${LAMBDA_TASK_ROOT}
+CMD ["app.lambda_handler"]
