@@ -51,10 +51,22 @@ jobs:
     needs: test
     
     steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f python3/requirements.txt ]; then pip install -r python3/requirements.txt; fi
+
       - name: Package files in a zip
         run: |
           RUN_ENV=dev 
-          zip -r pythonFiles.zip python3/src/app.py
+          zip pythonFiles.zip python3/src/app.py
 
 
           
