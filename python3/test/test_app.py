@@ -5,5 +5,5 @@ sys.path.append('../src')
 
 class AppTest(TestCase):
     def test_home(self):
-        result = app.handler()
+        result = app.handler(None, None)
         self.assertEqual(result, "Hola Regina")
