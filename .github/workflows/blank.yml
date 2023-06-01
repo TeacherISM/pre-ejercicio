@@ -302,6 +302,7 @@ jobs:
         id: create-api-gateway
         # if: steps.check-api-gateway-existence.outputs.api_gateway_exists == 'false'
         run: |
+          function_name=test-lambda
           function_arn=$(aws lambda get-function --function-name $function_name --region ${{ env.AWS_REGION }} --query 'Configuration.FunctionArn' --output text)
           rest_api_id=$(aws apigatewayv2 create-api --name "LambdaAPI" --protocol-type HTTP --target ${function_arn} --region ${{ env.AWS_REGION }} --query 'ApiId' --output text)
           echo "::set-output name=rest_api_id::$rest_api_id"
