@@ -53,6 +53,7 @@ jobs:
     steps:
       - name: Package files in a zip
         run: |
+          RUN_ENV=dev 
           zip -r pythonFiles.zip python3/src/app.py
 
 
