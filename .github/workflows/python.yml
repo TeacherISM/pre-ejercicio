@@ -45,3 +45,16 @@ jobs:
           coverage run -m pytest python3/test/
           coverage report
           coverage html -d cc_report/
+
+  package:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: Package files in a zip
+        run: |
+          zip -r pythonFiles.zip python3/src/app.py
+
+
+          
+    
