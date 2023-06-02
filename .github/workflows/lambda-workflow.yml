@@ -64,6 +64,7 @@ jobs:
           mkdir lambda_package
           cp src/app.py lambda_package/
           cp requirements.txt lambda_package/
+          cp Dockerfile lambda_package/
           cd lambda_package
           zip -r ../lambda.zip .
       - name: Publish Lambda ZIP artifact
