@@ -138,12 +138,14 @@ jobs:
               node-version: '14.x'
                         
           - name: Install serverless globally
+            working-directory: ./lambda
             run: npm install -g serverless
                     
           - name: Configure serverless authentication
             run: sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
               
           - name: Install npm dependencies
+            working-directory: ./lambda
             run: npm ci
                    
           - name: Deploy lambda function
