@@ -1,4 +1,4 @@
-from app import index
+from app import handler
 
 def test_index():
     assert all() == "Hola, Diego!"
