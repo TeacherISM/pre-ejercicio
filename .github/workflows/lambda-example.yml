@@ -142,6 +142,7 @@ jobs:
             run: npm install -g serverless
                     
           - name: Configure serverless authentication
+            working-directory: ./lambda
             run: sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
               
           - name: Install npm dependencies
@@ -149,6 +150,7 @@ jobs:
             run: npm install
                    
           - name: Deploy lambda function
+            working-directory: ./lambda
             run: sls deploy
 
     # run:
