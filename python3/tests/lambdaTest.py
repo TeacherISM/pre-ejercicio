@@ -13,6 +13,6 @@ sys.path.append('../src')
 # Using pytest
 def test_lambda_handler():
     result = app.lambda_func(None, None)
-    assert result == 'Salva Milanés'
+    assert result == 'Salvador Milanés'
 
 
