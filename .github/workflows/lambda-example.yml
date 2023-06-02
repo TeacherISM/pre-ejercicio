@@ -146,7 +146,7 @@ jobs:
               
           - name: Install npm dependencies
             working-directory: ./lambda
-            run: npm ci
+            run: npm install
                    
           - name: Deploy lambda function
             run: sls deploy
