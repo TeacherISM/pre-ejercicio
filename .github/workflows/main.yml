@@ -163,13 +163,13 @@ jobs:
             - name: Pull image ECR
               run: |
                 IMAGE_TAG=latest-ggp
-                ECR_REPOSITORY_URL=https://us-east-1.console.aws.amazon.com/ecr/repositories/public/171483448440/demo-repository-ecr?region=us-east-1
+                ECR_REPOSITORY_URL= https://us-east-1.console.aws.amazon.com/ecr/repositories/public/171483448440/demo-repository-ecr?region=us-east-1
 
                 echo $ECR_TOKEN | docker login --username AWS --password-stdin $ECR_REPOSITORY_URL
                 docker pull $ECR_REPOSITORY_URL:$IMAGE_TAG
             - name: Update Lambda function
               run: |
-                IMAGE_TAG=latest-ggp
+                IMAGE_TAG= latest-ggp
                 LAMBDA_FUNCTION_NAME=lambda-a01029422-ggp
 
                 aws lambda update-function-code \
