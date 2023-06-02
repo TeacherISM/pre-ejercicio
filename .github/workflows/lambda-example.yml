@@ -112,8 +112,5 @@ jobs:
                 docker load --input /tmp/$IMAGE_TAG.tar
                 docker image ls -a
                 docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    # # This job will build the docker image
-    # deploy:
-    # # This job will deploy the docker image to AWS ECR
     # run:
     # # This job will run the docker image in a AWS lambda function
