@@ -2,9 +2,12 @@ name: CDCI Workflow
 
 on:
   push:
-    branches: ['*']
-  pull_request:
-    branches: ['*']
+    branches: ['A01029956']
+  # pull_request:
+  #   branches: ['*']
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -22,7 +25,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pytest
           if [ -f python3/requirements.txt ]; then pip install -r python3/requirements.txt; fi
-          echo $PATH
       - name: Lint with flake8
         run: |
           # Stop the build if there are Python syntax errors or undefined names
@@ -33,25 +35,32 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: build
-
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install -r python3/requirements.txt
       - name: Test with pytest
-        env:
-          RUN_ENV: dev
         run: |
-          coverage run -m pytest python3/tests/
+          export PYTHONPATH=src
+          coverage run -m pytest tests/
           coverage report
-          coverage html -d cc_report/
+          coverage html -d coverage_html/
 
   package:
     runs-on: ubuntu-latest
     needs: test
-
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: pip install -r python3/requirements.txt
       - name: Package
-        run: |
-          python3 setup.py sdist bdist_wheel
-          python3 -m twine upload --repository pypi dist/*
+        run: zip app.zip src/app.py # Package the app.py file
 
   dockerize:
     runs-on: ubuntu-latest
