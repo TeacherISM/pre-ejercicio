@@ -26,4 +26,4 @@ jobs:
 
             - name: Build
               run: |
-                python python/src/app.py
+                python python3/src/app.py
