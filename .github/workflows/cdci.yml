@@ -85,7 +85,7 @@ jobs:
         uses: docker/build-push-action@v4
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: cdci
+          ECR_REPOSITORY: i4s3a1l6/cdci
           IMAGE_TAG: A01029956
         with:
           context: ./python3
@@ -126,7 +126,7 @@ jobs:
       - name: Deploy image
         env: 
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: cdci
+          ECR_REPOSITORY: i4s3a1l6/cdci
           IMAGE_TAG: A01029956
         run: |
           docker load -i /tmp/${{ env.IMAGE_TAG }}.tar
