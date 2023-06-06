@@ -1,5 +1,7 @@
 import unittest
 from src import app
+import sys
+sys.path.append('../src')
 
 
 class TestHandler(unittest.TestCase):
