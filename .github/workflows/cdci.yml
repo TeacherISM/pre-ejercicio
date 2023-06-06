@@ -60,7 +60,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r python3/requirements.txt
       - name: Package
-        run: zip app.zip src/app.py # Package the app.py file
+        run: zip app.zip python3/src/app.py # Package the app.py file
 
   dockerize:
     runs-on: ubuntu-latest
