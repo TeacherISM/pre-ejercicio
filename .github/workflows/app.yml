@@ -1,10 +1,14 @@
 # Workflow to build, test and deploy a Python function
 name: Ejercicio Workflow
 
-# On push to the A01352283 branch
 on:
     push:
-        branches: ["*"]
+      branches: ["*"]
+    pull_request:
+      branches: ["*"]
+
+permissions:
+    contents: read
 
 # Jobs
 jobs:

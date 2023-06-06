@@ -1,4 +1,4 @@
-from pre_ejercicio.python3.src import app
+from src import app
 from unittest import TestCase
 
 class TestHandler(TestCase):
