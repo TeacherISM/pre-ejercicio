@@ -1,15 +1,11 @@
 import unittest
-from ..src import handler
+from src import app
 
 
 class TestHandler(unittest.TestCase):
     def test_handler(self):
-        # Arrange
-        event = {}
-        context = {}
-
         # Act
-        result = handler(event, context)
+        result = app.handler(None, None)
 
         # Assert
         self.assertEqual(result, "Andrés says: Hello World!")
