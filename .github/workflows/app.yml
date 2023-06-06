@@ -3,9 +3,8 @@ name: Ejercicio Workflow
 
 # On push to the A01352283 branch
 on:
-  push:
-    branches:
-      - A01352283
+    push:
+        branches: [ A01352283 ]
 
 # Jobs
 jobs:
