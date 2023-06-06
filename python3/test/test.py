@@ -1,5 +1,5 @@
 import unittest
-from src import handler
+from ..src import handler
 
 
 class TestHandler(unittest.TestCase):
