@@ -1,2 +1,2 @@
-def lambda_func(event, context):
-  return 'Salvador Milanés'
+def lambda_handler():
+  return 'Hola, Salva'
