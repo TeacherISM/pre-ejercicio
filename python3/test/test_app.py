@@ -1,8 +1,5 @@
-from ..src import app
+from pre_ejercicio.python3.src import app
 from unittest import TestCase
-import sys
-sys.path.append('../src')
-
 
 class TestHandler(TestCase):
     def test_handler(self):
