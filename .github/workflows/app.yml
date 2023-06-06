@@ -4,7 +4,7 @@ name: Ejercicio Workflow
 # On push to the A01352283 branch
 on:
     push:
-        branches: ["A01352283"]
+        branches: ["*"]
 
 # Jobs
 jobs:
@@ -23,7 +23,7 @@ jobs:
               run: |
                 python -m pip install --upgrade pip
                 if [ -f python3/requirements.txt ]; then pip install -r python3/requirements.txt; fi
-                
+
             - name: Build
               run: |
                 python python/src/app.py
