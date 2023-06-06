@@ -89,7 +89,7 @@ jobs:
     Package:
             
             runs-on: ubuntu-latest
-            needs: Test
+            needs: [Test, Lint]
     
             steps:
                 - uses: actions/checkout@v3
