@@ -47,7 +47,7 @@ jobs:
       - name: Test with pytest
         run: |
           export PYTHONPATH=src
-          coverage run -m pytest tests/
+          coverage run -m pytest python3/tests/
           coverage report
           coverage html -d coverage_html/
 
