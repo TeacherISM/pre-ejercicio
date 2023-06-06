@@ -1,10 +1,10 @@
-import unittest
 from src import app
+from unittest import TestCase
 import sys
 sys.path.append('../src')
 
 
-class TestHandler(unittest.TestCase):
+class TestHandler(TestCase):
     def test_handler(self):
         # Act
         result = app.handler(None, None)
