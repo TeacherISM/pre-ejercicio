@@ -61,20 +61,19 @@ jobs:
           coverage html -d cc_report/
 
   Package:
-  runs-on: ubuntu-latest
-  needs: Test
+    runs-on: ubuntu-latest
+    needs: Test
 
-  steps:
-    - uses: actions/checkout@v3
-
-    - name: Zip the code
-      run: |
-        zip -r code_package.zip python3/src
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: code_package
-          path: code_package.zip
+    steps:
+      - uses: actions/checkout@v3
+      - name: Zip the code
+        run: |
+          zip -r code_package.zip python3/src
+        - name: Upload artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: code_package
+            path: code_package.zip
 
   Dockerize:
     runs-on: ubuntu-latest
