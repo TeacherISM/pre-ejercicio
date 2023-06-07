@@ -65,8 +65,8 @@ jobs:
     needs: Test
 
     steps:
-      - uses: actions/checkout@v3
       - name: Zip the code
+        uses: actions/checkout@v3
         run: |
           zip -r code_package.zip python3/src
         - name: Upload artifact
