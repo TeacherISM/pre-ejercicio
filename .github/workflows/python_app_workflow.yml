@@ -2,9 +2,9 @@ name: La segunda es la vencida
 
 on:
     push:
-        branches: ["A01352283"]
+        branches: ["*"]
     pull_request:
-        branches: ["A01352283"]
+        branches: ["*"]
 
 permissions:
     contents: read
