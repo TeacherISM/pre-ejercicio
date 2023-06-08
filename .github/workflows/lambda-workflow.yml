@@ -96,8 +96,8 @@ jobs:
         uses: docker/build-push-action@v4
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr
-          IMAGE_TAG: A01025108
+          ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr #aquí se cambia el ID del repositorio de AWS
+          IMAGE_TAG: A01025108 #aquí se pone matrícula
         with:
           context: ./python3
           tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
@@ -105,7 +105,7 @@ jobs:
       - name: Save image
         uses: actions/upload-artifact@v3
         env:
-          IMAGE_TAG: A01025108
+          IMAGE_TAG: A01025108 #aquí se pone matrícula
         with:
           name: ${{ env.IMAGE_TAG }}
           path: /tmp/${{ env.IMAGE_TAG }}.tar
@@ -119,7 +119,7 @@ jobs:
       - name: Read artifact
         uses: actions/download-artifact@v3
         env:
-          IMAGE_TAG: A01025108
+          IMAGE_TAG: A01025108 #aquí se pone matrícula
         with:
           name: ${{ env.IMAGE_TAG }}
           path: /tmp
@@ -137,8 +137,8 @@ jobs:
       - name: Deploy image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr
-          IMAGE_TAG: A01025108
+          ECR_REPOSITORY: d0z3f1c0/demo-repository-ecr #aquí se cambia el ID del repositorio de AWS
+          IMAGE_TAG: A01025108 #aquí se pone matrícula
         run: |
           docker load --input /tmp/$IMAGE_TAG.tar
           docker image ls -a
