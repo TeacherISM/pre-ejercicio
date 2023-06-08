@@ -57,9 +57,9 @@ jobs:
       - name: Run tests
         run: |
           export PYTHONPATH=src
-          coverage run -m pytest A01025076/tests/
+          coverage run -m pytest /A01025076/tests/
           coverage report
-          coverage html -d A01025076/cc_report/
+          coverage html -d /A01025076/cc_report/
     
   package:
     name: Package
