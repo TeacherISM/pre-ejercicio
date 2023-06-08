@@ -118,7 +118,7 @@ jobs:
         with:
           context: ./A01025076
           tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-          outputs: type=docker,dest=/tmp/${{ env.IMAGE_TAG }}.tar
+          outputs: type=docker,dest=/A01025076/tmp/${{ env.IMAGE_TAG }}.tar
   
       - name: Save image
         uses: actions/upload-artifact@v3
