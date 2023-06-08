@@ -127,8 +127,6 @@ jobs:
         with:
           name: ${{ env.IMAGE_TAG }}
           path: /A01025076/tmp/${{ env.IMAGE_TAG }}.tar
-      - name: Verify saved artifact
-        run: ls -R A01025076/tmp/
 
   deploy:
     name: Deploy
@@ -143,7 +141,7 @@ jobs:
           IMAGE_TAG: A01025076
         with:
           name: ${{ env.IMAGE_TAG }}
-          path: A01025076/tmp/
+          path: /A01025076/tmp
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
