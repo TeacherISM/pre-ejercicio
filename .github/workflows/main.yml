@@ -126,7 +126,7 @@ jobs:
           IMAGE_TAG: A01025076
         with:
           name: ${{ env.IMAGE_TAG }}
-          path: A01025076/tmp/${{ env.IMAGE_TAG }}.tar
+          path: /A01025076/tmp/${{ env.IMAGE_TAG }}.tar
       - name: Verify saved artifact
         run: ls -R A01025076/tmp/
 
