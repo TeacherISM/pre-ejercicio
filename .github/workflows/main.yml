@@ -57,9 +57,9 @@ jobs:
       - name: Run tests
         run: |
           export PYTHONPATH=src
-          coverage run -m pytest /A01025076/tests/
+          coverage run -m pytest A01025076/test/
           coverage report
-          coverage html -d /A01025076/cc_report/
+          coverage html -d A01025076/cc_report/
     
   package:
     name: Package
@@ -126,7 +126,7 @@ jobs:
           IMAGE_TAG: A01025076
         with:
           name: ${{ env.IMAGE_TAG }}
-          path: /A01025076/tmp/${{ env.IMAGE_TAG }}.tar
+          path: A01025076/tmp/${{ env.IMAGE_TAG }}.tar
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -140,7 +140,7 @@ jobs:
           IMAGE_TAG: A01025076
         with:
           name: ${{ env.IMAGE_TAG }}
-          path: /A01025076/tmp
+          path: A01025076/tmp
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
